@@ -44,6 +44,7 @@ how to use this project:
 
 *Step-6: After obtaining the embedded representation of nodes, the application.py file can be used to test their performance in downstream tasks. Both downstream tasks are written in the application.py file, so when testing a downstream task, it is necessary to comment out another startup command.
 
+Note: Please ensure that all required packages have been installed before testing.
 -----------------------------------------------------------------------------------------------------
 
 Note: Part of the experimental code is referenced from HetGNN: Heterogeneous Graph Neural Network
