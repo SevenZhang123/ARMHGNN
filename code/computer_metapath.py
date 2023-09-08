@@ -84,7 +84,7 @@ class metapath_seek(object):
         param expected_metapaths: a list of expected metapaths
         return: a list of python lists, consisting of metapath-based neighbor pairs and intermediate paths
         for example:for node type author,has two metapath:APA,APVPA
-        the author a123's metapath-based lists is :a_metapath_neigh_list[123]=[[a123,p12,a123],[a123,p43,v47,p43,a123]]
+        the author a123's metapath-based lists is :a_metapath_neigh_list[123]=[[a123,p12,a456],[a123,p43,v47,p43,a568]]
         """
         a_metapath_neigh_list = [[[] for j in range(2)] for i in range(set_param.A_n)]
         p_metapath_neigh_list = [[[] for j in range(2)] for i in range(set_param.P_n)]
@@ -126,17 +126,31 @@ class metapath_seek(object):
                         #metapath_neighbor_paris[(p1[0], p2[0])] = metapath_neighbor_paris.get((p1[0], p2[0]), []) + [
                         #    p1 + p2[-2::-1]]
                         if center_node_type == 0:
-                            if len(a_metapath_neigh_list[p1[0]][cnt]) < 10:
+                            if len(a_metapath_neigh_list[p1[0]][cnt]) < 10 and p1[0] != p2[0]:
                                 a_metapath_neigh_list[p1[0]][cnt].append(p1 + p2[-2::-1])
                             #a_metapath_neigh_list[p2[0]][cnt].append(metapath_neighbor_paris[((p1[0], p2[0]))])
                         elif center_node_type == 1:
-                            if len(p_metapath_neigh_list[p1[0]-set_param.A_n][cnt]) < 10:
+                            if len(p_metapath_neigh_list[p1[0]-set_param.A_n][cnt]) < 10 and p1[0] != p2[0]:
                                 p_metapath_neigh_list[p1[0]-set_param.A_n][cnt].append(p1 + p2[-2::-1])
                             #p_metapath_neigh_list[p2[0]][cnt].append(metapath_neighbor_paris[((p1[0], p2[0]))])
                         elif center_node_type == 2:
-                            if len(v_metapath_neigh_list[p1[0]-set_param.A_n-set_param.P_n][cnt]) < 10:
+                            if len(v_metapath_neigh_list[p1[0]-set_param.A_n-set_param.P_n][cnt]) < 10 and p1[0] != p2[0]:
                                 v_metapath_neigh_list[p1[0]-set_param.A_n-set_param.P_n][cnt].append(p1 + p2[-2::-1])
                             #v_metapath_neigh_list[p2[0]][cnt].append(metapath_neighbor_paris[((p1[0], p2[0]))])
+
+            for key, value in metapath_to_target.items():
+                for p1 in value:
+                    for p2 in value:
+                        if center_node_type == 0:
+                            if len(a_metapath_neigh_list[p1[0]][cnt]) < 10 and p1[0] == p2[0]:
+                                a_metapath_neigh_list[p1[0]][cnt].append(p1 + p2[-2::-1])
+                        elif center_node_type == 1:
+                            if len(p_metapath_neigh_list[p1[0]-set_param.A_n][cnt]) < 10 and p1[0] == p2[0]:
+                                p_metapath_neigh_list[p1[0]-set_param.A_n][cnt].append(p1 + p2[-2::-1])
+                        elif center_node_type == 2:
+                            if len(v_metapath_neigh_list[p1[0]-set_param.A_n-set_param.P_n][cnt]) < 10 and p1[0] == p2[0]:
+                                v_metapath_neigh_list[p1[0]-set_param.A_n-set_param.P_n][cnt].append(p1 + p2[-2::-1])
+
             cnt += 1
         if center_node_type == 0:
             self.a_metapath_neigh_list = a_metapath_neigh_list
